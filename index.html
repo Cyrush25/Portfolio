@@ -312,9 +312,19 @@ ACHIEVEMENTS
     // Smooth scrolling
     document.querySelectorAll('nav a').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+
+    // ✅ Allow external links (like blog.cyrush.space)
+        if (!href.startsWith('#')) {
+          return;
+        }
+
+    // ✅ Smooth scroll only for internal sections
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
 
