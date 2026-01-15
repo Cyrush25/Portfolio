@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Post</title>
+  <link rel="stylesheet" href="assets/css/blog.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/blog.css">
+
+</head>
+<header class="top-nav">
+  <div class="brand">
+    <a href="/">cyrush<span>.blog</span></a>
+  </div>
+
+  <div class="post-selector">
+    <button id="togglePosts">All posts ▾</button>
+    <ul id="postList" class="hidden"></ul>
+  </div>
+</header>
+
+<body>
+
+<article id="content"></article>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  fetch(`content/blogs/${slug}.md`)
+    .then(res => res.text())
+    .then(md => {
+      document.getElementById("content").innerHTML = marked.parse(md);
+    });
+</script>
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/header.js"></script>
+</body>
+</html>
