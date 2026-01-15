@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Post</title>
+  <link rel="stylesheet" href="assets/css/blog.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<article id="content"></article>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  fetch(`content/blogs/${slug}.md`)
+    .then(res => res.text())
+    .then(md => {
+      document.getElementById("content").innerHTML = marked.parse(md);
+    });
+</script>
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/header.js"></script>
+</body>
+</html>

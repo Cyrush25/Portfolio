@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cyrush Blog</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<header>
+  <h1>Cyrush Blog</h1>
+  <p>Security writeups & study notes by Aarush Chandna</p>
+</header>
+
+<main id="posts"></main>
+
+<script src="assets/js/posts.js"></script>
+<script>
+  const container = document.getElementById("posts");
+
+  posts.forEach(post => {
+    container.innerHTML += `
+      <article class="card">
+        <h2><a href="post.html?slug=${post.slug}">${post.title}</a></h2>
+        <p>${post.excerpt}</p>
+        <span>${post.readingTime} · ${post.tags.join(", ")}</span>
+      </article>
+    `;
+  });
+</script>
+<script src="assets/js/posts.js"></script>
+<script src="assets/js/header.js"></script>
+</body>
+</html>
