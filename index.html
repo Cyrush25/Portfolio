@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>notty // attack surface</title>
-<meta name="description" content="Aarush 'Notty' Chandna — offensive security engineer. ASM & Active Directory red teaming. CRTP / CRTE / ADCS." />
+<title>cyrush // attack surface</title>
+<meta name="description" content="Aarush Chandna — offensive security engineer. ASM & Active Directory red teaming. CRTP / CRTE / ADCS." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23070708'/><rect x='1' y='1' width='30' height='30' rx='6.5' fill='none' stroke='%23f0a23c' stroke-opacity='0.5'/><path d='M8 11l5 5-5 5' fill='none' stroke='%23f0a23c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/><line x1='16' y1='22' x2='24' y2='22' stroke='%23f0a23c' stroke-width='2.6' stroke-linecap='round'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0b0d;
-    --bg2:#0e1014;
-    --panel:#101319;
-    --line:#1b1f27;
+    --bg:#050506;
+    --bg2:#0a0b0e;
+    --panel:#0b0d11;
+    --line:#191c23;
     --fg:#c4ccd6;
     --dim:#5c6675;
     --dimmer:#3a424e;
@@ -35,9 +36,9 @@
   body{
     margin:0;
     background:
-      radial-gradient(135% 105% at 12% -5%, #161b24 0%, transparent 42%),
-      radial-gradient(125% 115% at 92% 105%, #121820 0%, transparent 48%),
-      linear-gradient(160deg, #0c0e13 0%, var(--bg) 55%, #08090b 100%);
+      radial-gradient(135% 105% at 12% -5%, #0e1219 0%, transparent 44%),
+      radial-gradient(125% 115% at 92% 105%, #0a0f15 0%, transparent 50%),
+      linear-gradient(160deg, #060709 0%, var(--bg) 52%, #000000 100%);
     background-attachment:fixed;
     color:var(--fg);
     font-family:var(--mono);
@@ -76,7 +77,7 @@
   }
   #aura::before,#aura::after{
     content:""; position:absolute; width:60vmax; height:60vmax; border-radius:50%;
-    filter:blur(85px); opacity:.20; will-change:transform; mix-blend-mode:screen;
+    filter:blur(85px); opacity:.15; will-change:transform; mix-blend-mode:screen;
   }
   #aura::before{background:radial-gradient(circle, var(--accent), transparent 62%);
     top:-18vmax; left:-8vmax; animation:float1 26s ease-in-out infinite}
@@ -155,7 +156,9 @@
 
   .pad{margin:4px 0 14px}
   .kv{display:grid; grid-template-columns:120px 1fr; gap:2px 14px; margin:6px 0 14px}
-  .kv .k{color:var(--dim)}
+  .kv .k{color:var(--dim); display:flex; align-items:center; gap:8px}
+  .mini{flex:none; width:14px; height:14px; color:var(--accent2); display:inline-flex; align-items:center}
+  .mini svg{width:14px; height:14px; display:block}
   .kv .v{color:var(--fg)}
 
   .row{display:flex; gap:10px; align-items:baseline; margin:2px 0}
@@ -200,18 +203,27 @@
 
   /* client engagement cards */
   .finds{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0 14px}
-  .find{position:relative; border:1px solid var(--line); border-radius:7px; padding:11px 13px;
+  .find{position:relative; display:flex; gap:11px; align-items:center;
+    border:1px solid var(--line); border-radius:7px; padding:11px 13px;
     background:rgba(255,255,255,.012); overflow:hidden; transition:.2s}
   .find::after{content:""; position:absolute; inset:0; border-radius:7px; pointer-events:none;
     background:radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%);
     opacity:0; transition:.25s}
-  .find:hover{border-color:var(--accent); transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.45)}
+  .find:hover{border-color:var(--accent); transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.5)}
   .find:hover::after{opacity:1}
+  .find .logo{flex:none; width:42px; height:42px; border-radius:9px; display:grid; place-items:center;
+    font-weight:800; font-size:15px; letter-spacing:-.02em; color:var(--accent); text-shadow:var(--glow);
+    border:1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    background:linear-gradient(150deg, color-mix(in srgb, var(--accent) 16%, transparent), transparent 80%)}
+  .find.alt .logo{color:var(--accent2); text-shadow:none;
+    border-color:color-mix(in srgb, var(--accent2) 45%, transparent);
+    background:linear-gradient(150deg, color-mix(in srgb, var(--accent2) 16%, transparent), transparent 80%)}
+  .find .meta{flex:1; min-width:0}
   .find .top{display:flex; justify-content:space-between; align-items:center; gap:8px}
   .find .org{color:var(--fg); font-weight:700}
   .find .sev{font-size:10px; letter-spacing:.08em; padding:1px 7px; border-radius:3px;
     border:1px solid color-mix(in srgb, var(--accent2) 50%, transparent); color:var(--accent2)}
-  .find .d{color:var(--dim); font-size:12px; margin-top:6px}
+  .find .d{color:var(--dim); font-size:12px; margin-top:5px}
 
   /* skills with icons */
   .sk{display:flex; gap:11px; align-items:flex-start; margin:9px 0}
@@ -331,7 +343,7 @@ const CURSOR=document.getElementById('cursor');
 const CHIPS=document.getElementById('chips');
 
 const ME={
-  handle:"notty", name:"Aarush Chandna", title:"offensive security engineer",
+  handle:"cyrush", name:"Aarush Chandna", title:"offensive security engineer",
   focus:"attack surface mgmt \u00b7 active directory red teaming",
   loc:"Bengaluru, KA \u00b7 India", email:"aarushchandna1@gmail.com",
   phone:"+91 9755520758", status:"available for immediate joining",
@@ -412,20 +424,20 @@ CMD.experience=()=>print(`
 `,'pad');
 
 const FINDINGS=[
-  ["Razorpay","external asset & exposure validation"],
-  ["Tekion","shadow IT + attack-path discovery"],
-  ["Observe.AI","cloud misconfig & leak surface"],
-  ["Hashgraph","external attack surface recon"],
-  ["Informa","asset discovery & risk triage"],
-  ["T-Mobile","telecom external surface recon"],
-  ["iCounter","exposed service & misconfig review"],
-  ["PTC","web app exposure & injection testing"],
-  ["NewAmericanFunding","fintech asset discovery & leaks"],
+  ["Razorpay","external asset & exposure validation","R"],
+  ["Tekion","shadow IT + attack-path discovery","Tk"],
+  ["Observe.AI","cloud misconfig & leak surface","O"],
+  ["Hashgraph","external attack surface recon","H"],
+  ["Informa","asset discovery & risk triage","In"],
+  ["T-Mobile","telecom external surface recon","TM"],
+  ["iCounter","exposed service & misconfig review","iC"],
+  ["PTC","web app exposure & injection testing","PTC"],
+  ["NewAmericanFunding","fintech asset discovery & leaks","NAF"],
 ];
 CMD.findings=async()=>{
   print(`<span class="muted">// enterprise clients i've run ASM engagements against &mdash; external recon, validation, remediation tracking</span>`);
   let cards=`<div class="finds">`;
-  FINDINGS.forEach(([o,d])=>cards+=`<div class="find"><div class="top"><span class="org">${o}</span><span class="sev">ASM</span></div><div class="d">${d}</div></div>`);
+  FINDINGS.forEach(([o,d,m],i)=>cards+=`<div class="find${i%2?' alt':''}"><div class="logo"${m.length>2?' style="font-size:12px"':''}>${m}</div><div class="meta"><div class="top"><span class="org">${o}</span><span class="sev">ASM</span></div><div class="d">${d}</div></div></div>`);
   cards+=`</div>`; print(cards);
   await drawMap();
   print(`<span class="dimmer">// scope &amp; findings stay under NDA &mdash; i don't dump client detail into a webpage. specifics in a call.</span>`,'pad');
@@ -458,6 +470,11 @@ const IC={
   cloud:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-9 7 7 0 0 0-13.4 2A4 4 0 0 0 5 19z"/></svg>`,
   shield:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>`,
   key:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5"/><path d="M11 12 21 2"/><path d="M16.5 6.5 20 10"/><path d="M19 4 22 7"/></svg>`,
+  mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="M3 6l9 6 9-6"/></svg>`,
+  phone:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.6a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>`,
+  gh:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>`,
+  li:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="2.5"/><line x1="7" y1="10.5" x2="7" y2="17"/><circle cx="7" cy="7" r="0.6" fill="currentColor"/><path d="M11 17v-3.5a2.5 2.5 0 0 1 5 0V17"/><line x1="11" y1="10.5" x2="11" y2="17"/></svg>`,
+  pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
 };
 
 CMD.skills=()=>print(`
@@ -493,12 +510,11 @@ CMD.education=()=>print(`
 
 CMD.contact=()=>print(`
 <div class="kv">
-  <span class="k">email</span><span class="v"><a class="link" href="mailto:${ME.email}">${ME.email}</a></span>
-  <span class="k">phone</span><span class="v"><a class="link" href="tel:${ME.phone.replace(/\s/g,'')}">${ME.phone}</a></span>
-  <span class="k">github</span><span class="v"><a class="link" href="https://github.com/Cyrush25" target="_blank" rel="noopener">github.com/Cyrush25</a></span>
-  <span class="k">linkedin</span><span class="v"><a class="link" href="https://linkedin.com/in/aarush25" target="_blank" rel="noopener">linkedin.com/in/aarush25</a></span>
-  <span class="k">location</span><span class="v">${ME.loc}</span>
-  <span class="k">status</span><span class="v ok">${ME.status}</span>
+  <span class="k"><span class="mini">${IC.mail}</span>email</span><span class="v"><a class="link" href="mailto:${ME.email}">${ME.email}</a></span>
+  <span class="k"><span class="mini">${IC.phone}</span>phone</span><span class="v"><a class="link" href="tel:${ME.phone.replace(/\s/g,'')}">${ME.phone}</a></span>
+  <span class="k"><span class="mini">${IC.gh}</span>github</span><span class="v"><a class="link" href="https://github.com/Cyrush25" target="_blank" rel="noopener">github.com/Cyrush25</a></span>
+  <span class="k"><span class="mini">${IC.li}</span>linkedin</span><span class="v"><a class="link" href="https://linkedin.com/in/aarush25" target="_blank" rel="noopener">linkedin.com/in/aarush25</a></span>
+  <span class="k"><span class="mini">${IC.pin}</span>location</span><span class="v">${ME.loc}</span>
 </div>
 <span class="muted">// fastest path is email. i reply.</span>
 `,'pad');
@@ -533,7 +549,7 @@ CMD.theme=(arg)=>{
   }
 };
 
-CMD.sudo=()=>print(`<span class="warn">notty is not in the sudoers file. this incident will be reported.</span> <span class="dimmer">(it won't.)</span>`,'pad');
+CMD.sudo=()=>print(`<span class="warn">cyrush is not in the sudoers file. this incident will be reported.</span> <span class="dimmer">(it won't.)</span>`,'pad');
 CMD.ls=()=>print(`<span class="acc2">whoami  experience  findings  projects  skills  certs  education  contact  resume</span>`,'pad');
 CMD.exit=()=>print(`<span class="muted">there is no exit. only recon.</span>`,'pad');
 CMD.matrix=()=>{toggleMatrix(); print(`<span class="muted">matrix rain ${mxOn?'engaged':'disengaged'}.</span>`,'pad');};
@@ -704,7 +720,7 @@ function scramble(el, finalText, dur){
 async function boot(){
   for(const [html,ms] of BOOT){
     print(html);
-    if(html.indexOf('bootid')>-1){ await scramble(document.getElementById('bootid'), 'aarush "notty" chandna', 700); }
+    if(html.indexOf('bootid')>-1){ await scramble(document.getElementById('bootid'), 'aarush chandna', 700); }
     await sleep(ms);
   }
   for(const e of ENDPOINTS){
